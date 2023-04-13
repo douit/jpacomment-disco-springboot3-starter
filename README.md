@@ -1,4 +1,4 @@
-# jpacomment-disco-boot-starter
+# jpacomment-disco-springboot3-starter
 JPA创建或修改数据库的表注释和字段注释
 
 
@@ -15,9 +15,9 @@ public class MyEntity {
 ```
 其中 **columnDefinition** 其实就是写 Native Sql，这样违背了JPA的初衷“屏蔽底层数据库差异”。
 
-jpacomment-disco-boot-starter 目前适配了三种数据库 Mysql Sqlserver oracle，后期可以添加其他数据库。
+jpacomment-disco-springboot3-starter 目前适配了三种数据库 Mysql Sqlserver oracle，后期可以添加其他数据库。
 
-jpacomment-disco-boot-starter 的方法很简单将 java属性上的注解注释内容 修改到表字段里面。
+jpacomment-disco-springboot3-starter 的方法很简单将 java属性上的注解注释内容 修改到表字段里面。
 
 用法如下：
 
@@ -98,7 +98,7 @@ public class SetCcommentController {
 logging:
   level:
     root: INFO
-    org.disco: DEBUG  # jpacomment-disco-boot-starter日志打印
+    org.disco: DEBUG  # jpacomment-disco-springboot3-starter日志打印
 ```
 控制台可以打印如下信息：
 
