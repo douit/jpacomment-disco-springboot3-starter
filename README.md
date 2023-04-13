@@ -1,5 +1,5 @@
 # jpacomment-disco-springboot3-starter
-JPA创建或修改数据库的表注释和字段注释
+JPA创建或修改数据库的表注释和字段注释(仅支持springboot3)
 
 
 ## 说明：
