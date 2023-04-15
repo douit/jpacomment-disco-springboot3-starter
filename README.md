@@ -28,7 +28,9 @@ disco:
     comment:
       enable: true
 ```
-```实现如下接口可以使用其它接口文档注解替代@ColumnComment和@TableComment,以knife4j为例
+
+实现如下接口可以使用其它接口文档注解替代@ColumnComment和@TableComment,以knife4j为例
+```java
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ClassUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -61,14 +63,9 @@ public String getColumnComment(TableCommentDTO table, Class targetClass, String 
     }
 }
 
-package org.disco.core.config.jpa;
+```
 
-import org.disco.core.service.impl.JpaCommentCallBackImpl;
-import org.disco.starter.jpacomment.call.JpaCommentCallBackInterface;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-
+```java
 @Configuration
 public class JpaAutoConfig {
 
@@ -80,6 +77,7 @@ public class JpaAutoConfig {
 }
 
 ```
+
 
 Entity 实体类里面添加注解 **@TableComment** 和  **@ColumnComment**
 
