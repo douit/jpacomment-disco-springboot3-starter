@@ -28,6 +28,59 @@ disco:
     comment:
       enable: true
 ```
+```实现如下接口可以使用其它接口文档注解替代@ColumnComment和@TableComment,以knife4j为例
+import cn.hutool.core.annotation.AnnotationUtil;
+import cn.hutool.core.util.ClassUtil;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.extern.slf4j.Slf4j;
+import org.disco.starter.jpacomment.call.JpaCommentCallBackInterface;
+import org.disco.starter.jpacomment.pojo.dto.TableCommentDTO;
+import org.hibernate.persister.entity.SingleTableEntityPersister;
+@Slf4j
+public class JpaCommentCallBackImpl implements JpaCommentCallBackInterface {
+@Override
+public String getColumnComment(TableCommentDTO table, Class targetClass, String propertyName, String columnName) {
+
+        Schema schema = AnnotationUtil.getAnnotation(
+                ClassUtil.getDeclaredField(targetClass, propertyName), Schema.class);
+        if (schema != null && schema.description()!= null) {
+            return schema.description();
+        }
+
+        return null;
+    }
+
+
+    @Override
+    public String getTableComment(SingleTableEntityPersister persister, TableCommentDTO table, Class targetClass) {
+        Schema schema  = AnnotationUtil.getAnnotation(targetClass, Schema.class);
+        if (schema != null && schema.description()!= null) {
+            return    schema.description();
+        }
+        return null;
+    }
+}
+
+package org.disco.core.config.jpa;
+
+import org.disco.core.service.impl.JpaCommentCallBackImpl;
+import org.disco.starter.jpacomment.call.JpaCommentCallBackInterface;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+
+@Configuration
+public class JpaAutoConfig {
+
+    @Bean
+    public JpaCommentCallBackInterface jpaCommentCallBackInterface() {
+        JpaCommentCallBackInterface service = new JpaCommentCallBackImpl();
+        return service;
+    }
+}
+
+```
+
 Entity 实体类里面添加注解 **@TableComment** 和  **@ColumnComment**
 
 ```java

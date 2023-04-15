@@ -4,9 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.disco.starter.jpacomment.call.JpaColumnCommentCallBackInterface;
 import org.disco.starter.jpacomment.call.JpaCommentCallBackInterface;
-import org.disco.starter.jpacomment.call.JpaTableCommentCallBackInterface;
 import org.disco.starter.jpacomment.enums.DbTypeEnum;
 import org.disco.starter.jpacomment.pojo.dto.TableCommentDTO;
 import org.disco.starter.jpacomment.properties.JpacommentProperties;
@@ -119,6 +117,8 @@ public class JpacommentAutoConfig {
             public String getColumnComment(TableCommentDTO table, Class targetClass, String propertyName, String columnName) {
                 return null;
             }
+
+            //**/
         };
         return service;
     }
