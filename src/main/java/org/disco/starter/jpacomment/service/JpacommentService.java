@@ -7,15 +7,17 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.disco.starter.jpacomment.annotation.ColumnComment;
 import org.disco.starter.jpacomment.annotation.TableComment;
-
+import org.disco.starter.jpacomment.call.JpaColumnCommentCallBackInterface;
+import org.disco.starter.jpacomment.call.JpaCommentCallBackInterface;
+import org.disco.starter.jpacomment.call.JpaTableCommentCallBackInterface;
 import org.disco.starter.jpacomment.pojo.dto.ColumnCommentDTO;
 import org.disco.starter.jpacomment.pojo.dto.TableCommentDTO;
-import org.hibernate.SessionFactory;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.*;
@@ -30,6 +32,22 @@ public class JpacommentService {
     public static Logger logger = LoggerFactory.getLogger(JpacommentService.class);
 
     private EntityManager entityManager;
+
+
+
+
+    @Autowired
+    private  JpaCommentCallBackInterface jpaCommentCallBackInterface;
+
+
+
+    private JpaColumnCommentCallBackInterface getJpaColumnCommentCallBackInterface() {
+        return jpaCommentCallBackInterface;
+    }
+
+    private JpaTableCommentCallBackInterface getJpaTableCommentCallBackInterface() {
+        return jpaCommentCallBackInterface;
+    }
 
     AlterCommentService alterCommentService;
 
@@ -134,7 +152,8 @@ public class JpacommentService {
         if (tableComment != null) {
             table.setComment(tableComment.value());
         } else {
-            table.setComment("");
+            String comment = getJpaTableCommentCallBackInterface().getTableComment(persister,table,targetClass);
+            table.setComment(comment != null ? comment : "");
         }
     }
 
@@ -199,7 +218,8 @@ public class JpacommentService {
             if (idColumnComment != null) {
                 column.setComment(idColumnComment.value());
             } else {
-                column.setComment("");
+                String comment = getJpaColumnCommentCallBackInterface().getColumnComment(table, targetClass, propertyName, item);
+                column.setComment(comment != null ? comment : "");
             }
             table.getColumnCommentDTOList().add(column);
         });

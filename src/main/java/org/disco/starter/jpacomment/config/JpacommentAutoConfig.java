@@ -4,7 +4,11 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.disco.starter.jpacomment.call.JpaColumnCommentCallBackInterface;
+import org.disco.starter.jpacomment.call.JpaCommentCallBackInterface;
+import org.disco.starter.jpacomment.call.JpaTableCommentCallBackInterface;
 import org.disco.starter.jpacomment.enums.DbTypeEnum;
+import org.disco.starter.jpacomment.pojo.dto.TableCommentDTO;
 import org.disco.starter.jpacomment.properties.JpacommentProperties;
 import org.disco.starter.jpacomment.service.AlterCommentService;
 import org.disco.starter.jpacomment.service.JpacommentService;
@@ -12,6 +16,7 @@ import org.disco.starter.jpacomment.service.impl.MysqlAlterCommentServiceImpl;
 import org.disco.starter.jpacomment.service.impl.OracleAlterCommentServiceImpl;
 import org.disco.starter.jpacomment.service.impl.PgSqlAlterCommentServiceImpl;
 import org.disco.starter.jpacomment.service.impl.SqlServerAlterCommentServiceImpl;
+import org.hibernate.persister.entity.SingleTableEntityPersister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -98,6 +103,23 @@ public class JpacommentAutoConfig {
         JpacommentService service = new JpacommentService();
         service.setEntityManager(entityManager);
         service.setAlterCommentService(alterCommentService());
+        return service;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public JpaCommentCallBackInterface jpaCommentCallBackInterface() {
+        JpaCommentCallBackInterface service = new JpaCommentCallBackInterface(){
+            @Override
+            public String getTableComment(SingleTableEntityPersister persister, TableCommentDTO table, Class targetClass) {
+                return null;
+            }
+
+            @Override
+            public String getColumnComment(TableCommentDTO table, Class targetClass, String propertyName, String columnName) {
+                return null;
+            }
+        };
         return service;
     }
 
