@@ -85,7 +85,7 @@ public class JpacommentService {
             try {
                 alterSingleTableAndColumn(k);
             } catch (Exception e) {
-                logger.error("tableName '{}' ALTER comment exception ", k, e);
+                logger.warn("=============================tableName '{}' ", k);
             }
         });
     }
@@ -108,6 +108,9 @@ public class JpacommentService {
                     item -> {
                         if (StrUtil.isNotBlank(item.getComment())) {
                             if (logger.isDebugEnabled()) {
+                                logger.debug("修改表 {} 字段 {} 的注释为 '{}'", commentDTO.getName(), item.getName(), item.getComment());
+                            }
+                            if(commentDTO.getName().equals("disco_conf_item_release")){
                                 logger.debug("修改表 {} 字段 {} 的注释为 '{}'", commentDTO.getName(), item.getName(), item.getComment());
                             }
                             alterCommentService.alterColumnComment(commentDTO.getName(), item.getName(), item.getComment());
